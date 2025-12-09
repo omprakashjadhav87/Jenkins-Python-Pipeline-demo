@@ -1,26 +1,27 @@
-name: build python application
+name: build Python application
 on: # multiple triggers when this workflow can run
-workflow_dispatch:# manually run the code
-push:
-  branches:
-    - master
-pull_request:
-    - master
+ workflow_dispatch:  # manually run code
+ push:
+   branches:
+     - master
+ pull_request:
+   branches:
+     - master
 jobs:
   job1:
-    runs-on:ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
-    - name: clone the code
+    - name: Clone the repo
       uses: actions/checkout@v6
-    - name: Install python on runner
-      uses: actions/setup@v6
+    - name: Install Python on runner
+      uses: actions/setup-python@v6
       with:
-      python-version: '3.11'
+        python-version: '3.11'
     - name: Install python dependencies
-    run: |
-      pip Install --upgrade pip
-      pip Install -r requirments.txt
-    - name: set python-PATH
+      run: |
+       pip install --upgrade pip
+       pip install -r requirements.txt
+    - name: set PythonPATH
       run: echo "PYTHONPATH"=$GITHUB_WORKSPACE >> $GITHUB_ENV
-    - name: run tests
+    - name: Run tests
       run: pytest tests --cov=app --cov-report=xml
